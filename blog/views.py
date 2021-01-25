@@ -1,11 +1,12 @@
+from django.db.models import Count
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
-from django.db.models import Count
-
-from taggit.models import Tag
-
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import TrigramSimilarity
 from .models import Post
+from .forms import SearchForm
+from taggit.models import Tag
 
 
 def post_list(request, tag_slug=None):
@@ -56,3 +57,20 @@ class PostListView(ListView):
     context_object_name = 'posts'
     paginate_by = 1
     template_name = 'blog/post/list.html'
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Post.published.annotate(
+                similarity=TrigramSimilarity('title', query),
+            ).filter(similarity__gt=0.1).order_by('-similarity')
+    return render(request,
+                  'blog/post/search.html',
+                  {'form': form,
+                   'query': query,
+                   'results': results})
