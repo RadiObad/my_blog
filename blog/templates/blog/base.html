@@ -1,24 +1,153 @@
 {% load blog_tags %}
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-  <title>{% block title %}{% endblock %}</title>
-  <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+  {% if title %}
+    <title>Django Blog - {{ title }}</title>
+    {% else %}
+    <title>11010 دت كوم</title>
+  {% endif %}
+  
+  <!-- Meta -->
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Blog Template">
+  <meta name="author" content="Xiaoying Riley at 3rd Wave Media">    
+
+  <link rel="shortcut icon" href="favicon.ico"> 
+
+  <!-- FontAwesome JS-->
+  <script defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+  <link href="{% static 'css/theme-1.css' %}" rel="stylesheet">  
+  <link rel="stylesheet" href="{% static 'css/ar.css' %}">
+
+  <style>
+    p{
+           text-align: right;
+           direction: rtl;
+       }
+         blockquote{
+             background: #f4f4f4;
+             border: 1px solid rgb(245, 242, 242);
+             border-left: 3px solid #f36d33;
+             color: #666;
+             page-break-inside: avoid;
+             font-family: monospace;
+             font-size: 15px;
+             line-height: 1.6;
+             margin-bottom: 1.6em;
+             max-width: 100%;
+             overflow: auto;
+             padding: 1em 1.5em;
+             display: block;
+             word-wrap: break-word;
+             direction: ltr !important;
+             text-align: left !important;
+             font-family: 'Courier New', Courier, monospace;
+         }
+
+        
+ </style>
 </head>
 <body>
-  <div id="content">
-    {% block content %}
-    {% endblock %}
-  </div>
-  <div id="sidebar">
-    <h2>My blog</h2>
-    <p>This is my blog. I've written {% total_posts %} posts so far.</p>
-    <p>
-      <a href="{% url "blog:post_feed" %}">Subscribe to my RSS feed</a>
-    </p>
-    <h3>Latest posts</h3>
-    {% show_latest_posts 3 %}
-  </div>
+    <header class="header text-center">	    
+        <h1 class="blog-name pt-lg-4 mb-0"  style="direction: rtl;">مدونة جانجو العربية</h1>
+      
+        <nav class="navbar navbar-expand-lg navbar-dark" >
+         
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div id="navigation" class="collapse navbar-collapse flex-column" >
+                <div class="profile-section pt-3 pt-lg-0">
+                      <img class="profile-image mb-3 rounded-circle mx-auto" src="{% static 'assets/images/profile.png/'%}" alt="image" >			
+
+                      <div class="bio mb-3">مرحبا أنا راضي عباد مطور ويب وكنت مطورًا رئيسيًا في حياتي الماضية ، والآن أستمتع بتدريس الدورات.<br><a href="#">معرفة المزيد عني</a></div><!--//bio-->
+                            
+                      <ul class="social-list list-inline py-3 mx-auto">
+                          <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+                          <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
+                          <li class="list-inline-item"><a href="#"><i class="fab fa-github-alt fa-fw"></i></a></li>
+                          <li class="list-inline-item"><a href="#"><i class="fab fa-stack-overflow fa-fw"></i></a></li>
+                          <li class="list-inline-item"><a href="#"><i class="fab fa-codepen fa-fw"></i></a></li>
+                      </ul><!--//social-list-->
+                      <hr> 
+                </div><!--//profile-section-->
+           
+                <br>
+                <br>  
+                <div class="my-2 my-md-3">    
+                    <a class="btn btn-primary" href="#" >تـواصـل مـعـنـا</a>
+                </div>
+
+                <!-- Her Nav small scran -->
+            </div>
+        </nav>  
+    </header>
+
+<div class="main-wrapper">
+  <nav class="navbar navbar-expand-md  bg-steel color-my" style="background-color:  rgba(95,203,113,0.25);">
+      <!-- <div class="container"> -->
+        <a class="navbar-brand" href="#">جانجو العربية</a>
+        </button>
+        <div class="navbar-collapse">       
+          <!-- Navbar Right Side -->
+          <div class="navbar-nav mr-auto">
+            
+              <a class="nav-item nav-link " style=" font-size: large;" href="#">كورسات Django</a>
+              <a class="nav-item nav-link  " style="font-size: large;"href="#">كورسات Python</a>
+              <a class="nav-item nav-link  btn-primary pr-2" style="border-radius: 3px;" href="{% url "blog:post_feed" %}">Subscribe to my RSS feed</a>
+
+            </div>
+        </div>
+      <!-- </div> -->
+  </nav>    
+  {% block content %}
+  
+  
+  {% endblock %}
+
+  
+  {% show_latest_posts 2 %}
+  
+{% block footer %}     
+<footer class="footer text-center  theme-bg-dark">
+
+  <nav class="navbar navbar-expand-md  bg-steel color-my" style="background-color:  rgba(95,203,113,0.25);">
+
+      <a class="navbar-brand" href="#">جانجو العربية</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarToggle">
+        <div class="navbar-nav mr-auto">
+          <a class="nav-item nav-link" href="#">الرئيسية</a>
+          <a class="nav-item nav-link" href="#">عن المدونة</a>
+        </div>
+        <!-- Navbar Right Side -->
+        <div class="navbar-nav">
+          {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="#"> أنشاء منشور جديد </a>
+            <a class="nav-item nav-link" href="#">البروفايل</a>
+          {% endif %}
+        </div>
+      </div>
+
+  </nav>        
+
+</footer>
+{% endblock %}
+</div>
+<!-- Javascript -->          
+<script src="{% static 'assets/plugins/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'assets/plugins/popper.min.js' %}"></script> 
+<script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script> 
+
 </body>
 </html>
+
+
